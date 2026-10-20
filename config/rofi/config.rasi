@@ -1,0 +1,14 @@
+/* ~/.config/rofi/config.rasi */
+@theme "~/.config/rofi/catppuccin-mocha.rasi"
+
+configuration {
+  modi: "drun,run,window";
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  font: "JetBrainsMono Nerd Font 12";
+  terminal: "kitty";
+  display-drun: "  Apps";
+  display-run: "  Run";
+  display-window: "  Windows";
+  drun-display-format: "{name}";
+}
