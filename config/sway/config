@@ -246,14 +246,5 @@ bindsym $mod+Shift+a exec ~/.config/sway/screenshot.sh edit
 #SwayIdle
 exec swayidle -w
 
-# On-screen display
-exec swayosd-server
-bindsym XF86AudioRaiseVolume exec swayosd-client --output-volume raise
-bindsym XF86AudioLowerVolume exec swayosd-client --output-volume lower
-bindsym XF86AudioMute exec swayosd-client --output-volume mute-toggle
-bindsym XF86AudioMicMute exec swayosd-client --input-volume mute-toggle
-bindsym XF86MonBrightnessUp exec swayosd-client --brightness raise
-bindsym XF86MonBrightnessDown exec swayosd-client --brightness lower
 
 #Volume & Brightness
-exec sh -c 'sleep 3 && swayosd-server'
