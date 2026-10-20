@@ -28,12 +28,18 @@
 | On-screen display | [SwayOSD](https://github.com/ErikReider/SwayOSD) | Slim volume and brightness popup |
 | System info | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | Custom image logo and Catppuccin colours |
 | Screenshots | grim + slurp + swappy | Area, full screen, and annotate |
-| Idle | swayidle | Screen off, then automatic logout |
+| Idle & lock | swayidle + swaylock | Locks the screen, then turns it off (apps keep running) |
 | File manager | Thunar | GTK theme applied |
 | Login screen | [SDDM](https://github.com/catppuccin/sddm) | Catppuccin Mocha Mauve, remembers last user |
 | GTK theme | [Catppuccin GTK](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme) | Dark, Papirus-Dark icons, Catppuccin cursors |
 
 ---
+
+
+## Image
+
+<img width="1920" height="1080" alt="2026-10-20_07-14-14" src="https://github.com/user-attachments/assets/477aac1e-df23-4487-a586-a4c215d51de8" />
+
 
 ## 🚀 Quick install
 
@@ -92,7 +98,7 @@ dotfiles/
 └── sddm/              # sddm.conf
 ```
 
-Because the configs are **symlinks**, editing a file in `~/.config` edits the repo file directly. To save changes:
+After `./install.sh` (or `./install.sh --links`), the configs in `~/.config` are **symlinks** into this repo, so editing a file there edits the repo file directly. If you copied the files by hand instead, copy changes back into `config/` yourself. To save changes:
 
 ```bash
 cd ~/dotfiles
@@ -133,19 +139,14 @@ Everything else follows the default Sway bindings. The full list is in `config/s
 - **Gaps:** change `gaps inner` and `gaps outer` near the bottom of the Sway config.
 - **Wallpaper:** replace `wallpapers/wall.png`, or change the `output * bg ...` line at the **bottom** of the Sway config.
 - **Terminal transparency:** change `alpha=` in `config/foot/foot.ini`.
-- **Idle timers:** edit `config/swayidle/config`.
+- **Idle timers:** edit `config/swayidle/config`, then restart it with `pkill swayidle && swaymsg exec 'swayidle -w'`.
 
 ---
-
-## Image
-
-<img width="1920" height="1080" alt="2026-10-20_07-14-14" src="https://github.com/user-attachments/assets/477aac1e-df23-4487-a586-a4c215d51de8" />
-
 
 ## ⚠️ Things to know
 
 - **Order matters in the Sway config.** Fedora's own defaults load from the `include` line near the end. Anything that must override them (wallpaper, screenshot and media bindings, `swayidle`) goes **below** that line.
-- **Idle logout.** The screen turns off after **60 seconds** idle, and you are **logged out after 70**. Unsaved work is lost. Raise the numbers in `config/swayidle/config`, or replace the logout rule with `swaylock` if you prefer a lock screen.
+- **Idle lock.** The screen **locks after 60 seconds** idle and **turns off after 70**. Nothing is closed, so apps and downloads keep running, and you enter your password to return. Change the numbers in `config/swayidle/config`. Start it with `exec swayidle -w` at the bottom of the Sway config.
 - **SwayOSD** comes from a COPR repository, since it is not in Fedora's main repos. The server starts with a short delay at login so D-Bus is ready.
 - **Nerd Font required.** Waybar, rofi, foot and fastfetch use its icons. Without it you will see empty boxes.
 - **fastfetch image logo** needs a terminal with sixel support (foot works).
@@ -165,6 +166,8 @@ Everything else follows the default Sway bindings. The full list is in `config/s
 | Red error bar after reload | Click "Toggle details". Warnings about "overwriting binding" are harmless |
 | Wallpaper doesn't change | Move the `output * bg` line below the `include` line |
 | Volume keys do nothing | Make sure `swayosd-server` is running: `pgrep -a swayosd` |
+| Screen never locks | Check `pgrep -a swayidle` shows one process, and that `swaylock` is installed |
+| `swaymsg exec swayidle -w` errors | Quote it: `swaymsg exec 'swayidle -w'` |
 | Thunar won't open | `pkill -9 thunar`, then reboot or restart the session |
 | Icons show as boxes | Install the Nerd Font and run `fc-cache -f` |
 
@@ -181,5 +184,7 @@ Everything else follows the default Sway bindings. The full list is in `config/s
 <div align="center">
 
 Made on Fedora with 💜
+
+</div>
 
 </div>
