@@ -137,6 +137,11 @@ Everything else follows the default Sway bindings. The full list is in `config/s
 
 ---
 
+## Image
+
+<img width="1920" height="1080" alt="2026-10-20_07-14-14" src="https://github.com/user-attachments/assets/477aac1e-df23-4487-a586-a4c215d51de8" />
+
+
 ## ⚠️ Things to know
 
 - **Order matters in the Sway config.** Fedora's own defaults load from the `include` line near the end. Anything that must override them (wallpaper, screenshot and media bindings, `swayidle`) goes **below** that line.
