@@ -17,6 +17,11 @@ My Fedora + Sway setup, themed with Catppuccin Mocha.
 - SDDM (login screen)
 - Catppuccin GTK theme, Papirus icons, Catppuccin cursors
 
+
+## Image
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/86b61ce0-2072-4bbf-bc3b-f392612a7b46" />
+
 ## Install
 
 This is made for Fedora. The installer uses `dnf`.
