@@ -47,6 +47,11 @@
       "key": "  Uptime"
     },
     {
+      "type": "command",
+      "key": "  OS Age",
+      "text": "for p in /var/log/anaconda /lost+found /; do t=$(stat -c %W \"$p\" 2>/dev/null); [ \"${t:-0}\" -gt 0 ] && break; done; echo $(( ($(date +%s) - ${t:-0}) / 86400 )) days"
+    },
+    {
       "type": "packages",
       "key": "  Packages"
     },
@@ -87,10 +92,6 @@
       "type": "disk",
       "key": "  Disk",
       "folders": "/"
-    },
-    {
-      "type": "battery",
-      "key": "  Battery"
     },
     {
       "type": "custom",
