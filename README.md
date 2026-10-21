@@ -1,30 +1,52 @@
-# dotfiles-sway-ab
+<div align="center">
 
-My Fedora + Sway setup, themed with Catppuccin Mocha.
+# 🌙 dotfiles-sway-ab
 
-## What is included
+**A floating-island Sway desktop on Fedora, wrapped in [Catppuccin Mocha](https://github.com/catppuccin/catppuccin).**
 
-- Sway (window manager)
-- Waybar (status bar)
-- rofi (app launcher)
-- foot (terminal)
-- wlogout (power menu)
-- fastfetch (system info)
-- starship (shell prompt)
-- swayidle + swaylock (lock screen on idle)
-- grim, slurp, swappy (screenshots)
-- Thunar (file manager)
-- SDDM (login screen)
-- Catppuccin GTK theme, Papirus icons, Catppuccin cursors
+![Fedora](https://img.shields.io/badge/Fedora-51A2DA?style=for-the-badge&logo=fedora&logoColor=white)
+![Sway](https://img.shields.io/badge/Sway-68751C?style=for-the-badge&logo=wayland&logoColor=white)
+![Catppuccin](https://img.shields.io/badge/Catppuccin-Mocha-cba6f7?style=for-the-badge&labelColor=1e1e2e)
+![Shell](https://img.shields.io/badge/Starship-DD0B78?style=for-the-badge&logo=starship&logoColor=white)
+
+[Install](#-quick-install) · [Structure](#-structure) · [Keys](#%EF%B8%8F-keybindings) · [Sync](#-keeping-it-in-sync) · [Troubleshooting](#-troubleshooting)
+
+</div>
+
+<!-- Add screenshots here:
+<p align="center"><img src="screenshots/desktop.png" width="90%"></p>
+-->
+
+---
+
+## ✨ What's inside
+
+| | Component | Details |
+|---|---|---|
+| 🪟 | **Sway** | Gaps, thin pixel borders, Catppuccin colours |
+| 📊 | **Waybar** | Floating "island" modules, one accent colour per module |
+| 🚀 | **rofi** | App icons with Apps, Run and Windows modes |
+| 💻 | **foot** | Transparent background, JetBrainsMono Nerd Font 12 |
+| ⏻ | **wlogout** | Logout, suspend, reboot and shutdown |
+| 🖼️ | **fastfetch** | Custom image logo with Catppuccin colours |
+| 💜 | **starship** | Catppuccin powerline prompt |
+| 🔒 | **swayidle + swaylock** | Lock after 3 minutes, screen off 10 seconds later |
+| 📸 | **grim + slurp + swappy** | Full screen, area, and annotated screenshots |
+| 📁 | **Thunar** | Themed with the GTK theme |
+| 🔐 | **SDDM** | Catppuccin Mocha Mauve login, remembers last user |
+| 🎨 | **Theming** | Catppuccin GTK, Papirus-Dark icons, Bibata cursor |
+
+---
 
 
-## Image
+## Looks
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/86b61ce0-2072-4bbf-bc3b-f392612a7b46" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9fb2d1ef-4631-4911-8d96-c3e180be652a" />
 
-## Install
 
-This is made for Fedora. The installer uses `dnf`.
+## 🚀 Quick install
+
+> Built for **Fedora**. The installer uses `dnf`, so other distributions need small changes.
 
 ```bash
 sudo dnf install -y git
@@ -33,55 +55,74 @@ cd ~/dotfiles
 ./install.sh --sddm
 ```
 
-If you have no SSH key on the new PC, clone with HTTPS instead:
+No SSH key on the new PC? Clone over HTTPS instead:
 
 ```bash
 git clone https://github.com/AbiturabVora/dotfiles-sway-ab.git ~/dotfiles
 ```
 
-Then log out and back in, or reload Sway with `Mod+Shift+C`.
+Then log out and back in, or reload Sway with `Mod` + `Shift` + `C`.
 
-### Installer options
+### 🔧 Installer options
 
 | Command | What it does |
 |---|---|
-| `./install.sh` | Install packages, fonts and themes, then link configs |
-| `./install.sh --links` | Only link configs |
+| `./install.sh` | Installs packages, fonts and themes, then links configs |
+| `./install.sh --links` | Only links configs, with no installs |
 | `./install.sh --sddm` | Everything above, plus the SDDM login theme |
 
-Old configs are moved to `~/.dotfiles-backup/<time>/` before linking. Nothing is deleted.
+> 🛟 **Safe by design:** existing configs are moved to `~/.dotfiles-backup/<time>/` before linking. Nothing is deleted.
 
-## Folder layout
+### 🧩 Not handled by the installer
+
+Two things are set up by hand:
+
+```bash
+# prompt
+sudo dnf install starship
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
+
+# cursor: download Bibata-Modern-Classic.tar.xz from
+# https://github.com/ful1e5/Bibata_Cursor/releases, then:
+mkdir -p ~/.local/share/icons
+tar -xf ~/Downloads/Bibata-Modern-Classic.tar.xz -C ~/.local/share/icons
+```
+
+---
+
+## 📁 Structure
 
 ```
 dotfiles/
-  install.sh
-  sync.sh
-  config/
-    sway/
-    waybar/
-    rofi/
-    foot/
-    wlogout/
-    fastfetch/
-    swayidle/
-    gtk-3.0/
-    starship.toml
-  wallpapers/
-  sddm/
+├── install.sh
+├── sync.sh
+├── config/
+│   ├── sway/          # sway config, screenshot.sh
+│   ├── waybar/        # config.jsonc, style.css
+│   ├── rofi/          # config.rasi, catppuccin-mocha.rasi
+│   ├── foot/          # foot.ini
+│   ├── wlogout/       # layout, style.css
+│   ├── fastfetch/     # config.jsonc
+│   ├── swayidle/      # config
+│   ├── gtk-3.0/       # settings.ini
+│   └── starship.toml
+├── wallpapers/        # wall.png, fetch.png
+└── sddm/              # sddm.conf
 ```
 
-## Save changes to GitHub
+---
 
-Run the sync script from anywhere:
+## 🔄 Keeping it in sync
+
+**Save your changes to GitHub with one command:**
 
 ```bash
 ~/dotfiles/sync.sh "what I changed"
 ```
 
-It copies your configs from `~/.config` into the repo, then commits, pulls and pushes. Do not use `sudo` with git.
+It copies your configs from `~/.config` into the repo, then commits, pulls and pushes.
 
-To update another PC:
+**Update another PC:**
 
 ```bash
 cd ~/dotfiles
@@ -89,36 +130,85 @@ git pull origin main
 ./install.sh --links
 ```
 
-## Main keys
+> ⚠️ Never run git with `sudo`. Root has no SSH key, and it leaves root-owned files inside `.git`.
 
-`$mod` is the Super key.
+---
+
+## ⌨️ Keybindings
+
+`Mod` is the Super (Windows) key.
 
 | Keys | Action |
 |---|---|
-| `$mod + Return` | Terminal |
-| `$mod + d` | App launcher |
-| `$mod + q` | Close window |
-| `$mod + Shift + c` | Reload Sway |
-| `$mod + 1 to 9` | Switch workspace |
-| `Print` | Screenshot to clipboard |
-| `$mod + Print` | Select area, copy to clipboard |
-| `$mod + Shift + s` | Select area, save to `~/Pictures/Screenshots` |
-| `$mod + Shift + a` | Select area, annotate in swappy |
+| `Mod` + `Return` | Open terminal |
+| `Mod` + `d` | App launcher |
+| `Mod` + `q` | Close window |
+| `Mod` + `Shift` + `c` | Reload Sway |
+| `Mod` + `1` … `9` | Switch workspace |
+| `Mod` + `f` | Fullscreen |
+| `Print` | Screenshot of the whole screen to the clipboard |
+| `Mod` + `Print` | Select an area and copy it |
+| `Mod` + `Shift` + `s` | Select an area and save it to `~/Pictures/Screenshots` |
+| `Mod` + `Shift` + `a` | Select an area and annotate it in swappy |
 
-## Notes
+Volume and brightness keys use Fedora's default bindings. Everything else follows default Sway.
 
-- Anything that must override Fedora's defaults goes below the `include` line at the bottom of the Sway config.
-- The screen locks after 60 seconds idle and turns off after 70. Apps keep running. Change the numbers in `config/swayidle/config`.
-- A Nerd Font (JetBrainsMono) is needed for the icons.
-- The machine uses the Nvidia driver, so check the Sway config with `sway -C --unsupported-gpu`.
-- Configs were written for `/home/abi`. The installer rewrites this to your home folder.
+---
 
-## Troubleshooting
+## 🎨 Customising
+
+- **Accent colour:** replace mauve (`#cba6f7`) with another colour from the [Catppuccin palette](https://catppuccin.com/palette).
+- **Bar size:** change `height`, `margin-top` and `spacing` in `config/waybar/config.jsonc`.
+- **Gaps:** change `gaps inner` and `gaps outer` near the bottom of the Sway config.
+- **Wallpaper:** replace `wallpapers/wall.png`, or edit the `output * bg` line.
+- **Terminal transparency:** change `alpha=` in `config/foot/foot.ini`.
+- **Idle timers:** edit `config/swayidle/config`, then run `pkill swayidle && swaymsg exec 'swayidle -w'`.
+- **Cursor:** set in three places, `gsettings`, `config/gtk-3.0/settings.ini` and the `seat seat0 xcursor_theme` line in the Sway config.
+
+---
+
+## 📝 Good to know
+
+- 📌 **Order matters.** Fedora's defaults load from the `include` line near the end of the Sway config. Anything that must override them (wallpaper, screenshot keys, swayidle) goes **below** that line.
+- 🔒 **Idle lock.** The screen locks after **3 minutes** and turns off 10 seconds later. Apps keep running, and you enter your password to return.
+- 🟢 **Nvidia.** The machine uses the proprietary driver, so check the Sway config with `sway -C --unsupported-gpu`.
+- 🔤 **Nerd Font required.** Waybar, rofi, foot and fastfetch use its icons.
+- 🖼️ **fastfetch image logo** needs a terminal with sixel support. foot has it.
+- 🏠 **Paths.** Configs were written for `/home/abi`, and the installer rewrites this to your home folder.
+- 🖥️ **SDDM.** Test the theme before you reboot:
+  ```bash
+  sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/catppuccin-mocha-mauve
+  ```
+  To go back to the default, set `Current=03-sway-fedora` in `/etc/sddm.conf`.
+
+---
+
+## 🧯 Troubleshooting
 
 | Problem | Fix |
 |---|---|
 | Wallpaper does not change | Move the `output * bg` line below the `include` line |
 | Icons show as boxes | Install the Nerd Font, then run `fc-cache -f` |
-| Red bar after reload | Click Toggle details. Warnings about overwriting bindings are fine |
+| Red bar after reload | Click **Toggle details**. Warnings about overwriting bindings are fine |
 | Screen never locks | Check `pgrep -a swayidle` and that `swaylock` is installed |
+| Cursor looks wrong | Check the cursor name in `settings.ini` and the Sway config |
+| App closes at once on Wayland | Try `GDK_BACKEND=x11 app` or `WEBKIT_DISABLE_DMABUF_RENDERER=1 app` |
 | Push is rejected | Run `git pull origin main --no-rebase`, then push again |
+| `Permission denied (publickey)` | You used `sudo`, or the SSH key isn't loaded. Test with `ssh -T git@github.com` |
+
+---
+
+## 🙏 Credits
+
+- [Catppuccin](https://github.com/catppuccin) for the palette and themes
+- [Fausto-Korpsvart/Catppuccin-GTK-Theme](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme) for the GTK theme
+- [Bibata Cursor](https://github.com/ful1e5/Bibata_Cursor) for the cursor
+- The Sway, Waybar, rofi, foot, wlogout, starship and fastfetch projects
+
+---
+
+<div align="center">
+
+Made on Fedora with 💜
+
+</div>
