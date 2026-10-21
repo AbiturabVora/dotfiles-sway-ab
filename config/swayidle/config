@@ -1,5 +1,5 @@
-timeout 60 'swaylock -f -i /home/abi/Pictures/wall.png'
-timeout 70 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+timeout 180 'swaylock -f -i /home/abi/Pictures/wall.png'
+timeout 190 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
 before-sleep 'swaylock -f -i /home/abi/Pictures/wall.png'
 lock 'swaylock -f -i /home/abi/Pictures/wall.png'
 unlock 'pkill -xu "$USER" -SIGUSR1 swaylock'

@@ -246,5 +246,5 @@ bindsym $mod+Shift+a exec ~/.config/sway/screenshot.sh edit
 #SwayIdle
 exec swayidle -w
 
-
-#Volume & Brightness
+#Cursors
+seat seat0 xcursor_theme catppuccin-mocha-blue-cursors 24
