@@ -248,3 +248,5 @@ exec swayidle -w
 
 #Cursors
 seat seat0 xcursor_theme catppuccin-mocha-blue-cursors 24
+
+
