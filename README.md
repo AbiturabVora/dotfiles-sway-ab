@@ -41,7 +41,8 @@
 
 ## Looks
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9fb2d1ef-4631-4911-8d96-c3e180be652a" />
+<img width="1918" height="1073" alt="image" src="https://github.com/user-attachments/assets/d6d71de4-2895-4ecb-a109-2cb783edeef4" />
+
 
 
 ## 🚀 Quick install
