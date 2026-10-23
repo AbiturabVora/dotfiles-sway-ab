@@ -1,0 +1,65 @@
+[global]
+    monitor = 0
+    follow = mouse
+    origin = top-right
+    offset = (10, 44)          # sits just below your 30px Waybar
+    width = (280, 340)
+    height = (0, 300)
+    notification_limit = 5
+    gap_size = 8
+    padding = 10
+    horizontal_padding = 14
+    frame_width = 2
+    corner_radius = 14
+    separator_height = 0
+
+    font = JetBrainsMono Nerd Font 11
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    markup = full
+    word_wrap = yes
+    show_age_threshold = 60
+
+    icon_position = left
+    max_icon_size = 40
+    enable_recursive_icon_lookup = true
+
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 0
+    progress_bar_corner_radius = 5
+    progress_bar_min_width = 150
+
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#89b4fa"
+    highlight = "#89b4fa"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#b4befe"
+    highlight = "#b4befe"
+    timeout = 8
+
+[urgency_critical]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#f38ba8"
+    highlight = "#f38ba8"
+    timeout = 0
+
+# Volume / brightness popup (from osd.sh)
+[osd]
+    appname = "osd"
+    format = "%s"
+    timeout = 1
+    history_ignore = yes
+    frame_color = "#b4befe"
+    highlight = "#b4befe"
