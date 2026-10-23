@@ -1,0 +1,171 @@
+// ~/.config/waybar/config.jsonc
+// Your original config, restored (tray, rofi, wlogout flags, btop clicks, etc.)
+// Only change: "hyprland/window" block renamed to "sway/window" so max-length applies.
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "margin-top": 4,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 6,
+
+  "modules-left": [
+    "custom/launcher",
+    "sway/workspaces",
+    "sway/window"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "tray",
+    "pulseaudio",
+    "backlight",
+    "cpu",
+    "temperature",
+    "battery",
+    "custom/power"
+  ],
+
+  // ---------- Left ----------
+  "custom/launcher": {
+    "format": "󰍜",
+    "tooltip": false,
+    "on-click": "rofi -show drun"
+  },
+
+  "sway/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "urgent": "\uf071",
+      "default": "\u25cb"
+    },
+    "on-click": "activate",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "*": 5
+    }
+  },
+
+  "sway/window": {
+    "format": "{title}",
+    "max-length": 40,
+    "separate-outputs": true,
+    "rewrite": {
+      "": "Desktop"
+    }
+  },
+
+  // ---------- Center ----------
+  "clock": {
+    "format": "\uf017  {:%I:%M %p}",
+    "format-alt": "\uf073  {:%A, %d %B %Y}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#f5c2e7'><b>{}</b></span>",
+        "days": "<span color='#cdd6f4'>{}</span>",
+        "weekdays": "<span color='#89b4fa'><b>{}</b></span>",
+        "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
+  },
+
+  // ---------- Right ----------
+  "tray": {
+    "icon-size": 16,
+    "spacing": 10
+  },
+
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "\uf6a9  Muted",
+    "format-bluetooth": "\uf293  {volume}%",
+    "format-icons": {
+      "headphone": "\uf025",
+      "headset": "\uf025",
+      "default": ["\uf026", "\uf027", "\uf028"]
+    },
+    "scroll-step": 5,
+    "on-click": "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  },
+
+  "backlight": {
+    "format": "{icon}  {percent}%",
+    "format-icons": ["\uf185"],
+    "scroll-step": 5
+  },
+
+  "network": {
+    "format-wifi": "\uf1eb  {signalStrength}%",
+    "format-ethernet": "\uf0e8  Wired",
+    "format-disconnected": "\uf071  Offline",
+    "tooltip-format-wifi": "{essid}\n{ipaddr}/{cidr}\n\u2191 {bandwidthUpBytes}  \u2193 {bandwidthDownBytes}",
+    "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}",
+    "on-click": "nm-connection-editor"
+  },
+
+  "bluetooth": {
+    "format": "\uf293",
+    "format-disabled": "\uf294",
+    "format-connected": "\uf293  {num_connections}",
+    "tooltip-format": "{controller_alias}\t{controller_address}",
+    "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "on-click": "blueman-manager"
+  },
+
+  "cpu": {
+    "interval": 2,
+    "format": "\uf2db  {usage}%",
+    "on-click": "kitty -e btop"
+  },
+
+  "temperature": {
+    "critical-threshold": 80,
+    "format": "{icon}  {temperatureC}\u00b0C",
+    "format-critical": "{icon}  {temperatureC}\u00b0C",
+    "format-icons": ["\uf2cb", "\uf2c9", "\uf2c7"]
+  },
+
+  "battery": {
+    "interval": 30,
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "\uf0e7  {capacity}%",
+    "format-plugged": "\uf1e6  {capacity}%",
+    "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
+    "tooltip-format": "{timeTo}"
+  },
+
+  "custom/power": {
+    "format": " \uf011 ",
+    "tooltip": false,
+    "on-click": "wlogout -b 4 -c 20 -r 20 -L 570 -R 570 -T 450 -B 450"
+  }
+}

@@ -1,46 +1,30 @@
-/* ~/.config/waybar/style.css
- * Catppuccin Mocha — floating islands
- * Swap the palette block below for Latte / Frappé / Macchiato if you like.
- */
+/* Waybar style - floating pills, Catppuccin Mocha */
 
-/* ---------- Palette (Mocha) ---------- */
-@define-color rosewater #f5e0dc;
-@define-color flamingo  #f2cdcd;
-@define-color pink      #f5c2e7;
-@define-color mauve     #cba6f7;
-@define-color red       #f38ba8;
-@define-color maroon    #eba0ac;
-@define-color peach     #fab387;
-@define-color yellow    #f9e2af;
-@define-color green     #a6e3a1;
-@define-color teal      #94e2d5;
-@define-color sky       #89dceb;
-@define-color sapphire  #74c7ec;
-@define-color blue      #89b4fa;
-@define-color lavender  #b4befe;
-@define-color text      #cdd6f4;
-@define-color subtext1  #bac2de;
-@define-color subtext0  #a6adc8;
-@define-color overlay2  #9399b2;
-@define-color overlay1  #7f849c;
-@define-color overlay0  #6c7086;
-@define-color surface2  #585b70;
-@define-color surface1  #45475a;
-@define-color surface0  #313244;
 @define-color base      #1e1e2e;
 @define-color mantle    #181825;
-@define-color crust     #11111b;
+@define-color text      #cdd6f4;
+@define-color overlay0  #6c7086;
+@define-color overlay1  #7f849c;
+@define-color lavender  #b4befe;
+@define-color blue      #89b4fa;
+@define-color sapphire  #74c7ec;
+@define-color teal      #94e2d5;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color red       #f38ba8;
+@define-color mauve     #cba6f7;
+@define-color maroon    #eba0ac;
 
-/* ---------- Global ---------- */
 * {
-  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", sans-serif;
+  font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
+  min-height: 0;
   border: none;
   border-radius: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
+  box-shadow: none;
+  text-shadow: none;
 }
 
 window#waybar {
@@ -48,187 +32,123 @@ window#waybar {
   color: @text;
 }
 
-tooltip {
-  background: @mantle;
-  color: @text;
-  border: 2px solid @mauve;
-  border-radius: 12px;
-}
-
-tooltip label {
-  color: @text;
-  padding: 4px;
-}
-
-/* ---------- Island base ---------- */
+/* ---------- Shared pill look ---------- */
 #custom-launcher,
 #workspaces,
-#window,
 #clock,
-#tray,
-#pulseaudio,
-#backlight,
 #network,
 #bluetooth,
+#pulseaudio,
+#backlight,
 #cpu,
-#memory,
 #temperature,
 #battery,
 #custom-power {
-  background: alpha(@base, 0.92);
+  background: alpha(@mantle, 0.65);
   color: @text;
-  padding: 0 10px;
-  margin: 0;
-  border-radius: 14px;
-  border: 2px solid @surface0;
-  transition: all 0.25s ease;
+  border: 1px solid @overlay0;
+  border-radius: 999px;
+  padding: 0 9px;
+  margin: 3px 0;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#cpu:hover,
+#temperature:hover,
+#battery:hover,
+#clock:hover {
+  background: alpha(@base, 0.95);
 }
 
 /* ---------- Left ---------- */
 #custom-launcher {
-  color: @crust;
-  background: @mauve;
-  border-color: @mauve;
-  font-size: 18px;
-  padding: 0 16px 0 14px;
+  background: @lavender;
+  color: @base;
+  border-color: @lavender;
+  padding: 0 11px;
+  font-size: 13px;
 }
 
 #custom-launcher:hover {
-  background: @lavender;
-  border-color: @lavender;
+  background: @mauve;
+  border-color: @mauve;
 }
 
 #workspaces {
-  padding: 0 6px;
+  padding: 0 4px;
+  border-color: alpha(@overlay0, 0.6);
 }
 
-/* Reset GTK theme button styling so our colours always win */
 #workspaces button {
+  background: transparent;
   color: @overlay1;
-  background-color: transparent;
-  background-image: none;
-  box-shadow: none;
-  text-shadow: none;
-  border: none;
-  padding: 0 10px;
-  margin: 4px 2px;
-  border-radius: 10px;
-  transition: all 0.25s ease;
+  padding: 0 8px;
+  margin: 2px 1px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
 }
 
 #workspaces button:hover {
+  background: alpha(@lavender, 0.25);
   color: @text;
-  background-color: @surface0;
-  background-image: none;
 }
 
-/* Current workspace (Sway uses .focused) */
 #workspaces button.focused,
 #workspaces button.active {
-  color: @crust;
-  background-color: @mauve;
-  background-image: none;
-  padding: 0 16px;
-}
-
-/* Workspace visible on another monitor */
-#workspaces button.visible:not(.focused) {
-  color: @text;
-  background-color: @surface1;
-  background-image: none;
+  background: @lavender;
+  color: @base;
 }
 
 #workspaces button.urgent {
-  color: @crust;
-  background-color: @red;
-  background-image: none;
-}
-
-#window {
-  color: @subtext1;
-  font-weight: 500;
-  border-color: @surface0;
-}
-
-window#waybar.empty #window {
-  background: transparent;
-  border-color: transparent;
+  background: @red;
+  color: @base;
 }
 
 /* ---------- Center ---------- */
 #clock {
-  color: @pink;
-  border-color: @pink;
-  padding: 0 18px;
+  border-color: @text;
+  padding: 0 12px;
 }
 
-#clock:hover {
-  background: @pink;
-  color: @crust;
-}
-
-/* ---------- Right ---------- */
-#tray {
-  padding: 0 10px;
-}
-
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background: @red;
-  border-radius: 8px;
-}
-
-#pulseaudio  { color: @blue;     border-color: @blue; }
-#backlight   { color: @yellow;   border-color: @yellow; }
-#network     { color: @teal;     border-color: @teal; }
-#bluetooth   { color: @sapphire; border-color: @sapphire; }
-#cpu         { color: @peach;    border-color: @peach; }
-#memory      { color: @mauve;    border-color: @mauve; }
-#temperature { color: @maroon;   border-color: @maroon; }
-#battery     { color: @green;    border-color: @green; }
-
-#pulseaudio:hover,
-#backlight:hover,
-#network:hover,
-#bluetooth:hover,
-#cpu:hover,
-#memory:hover,
-#temperature:hover,
-#battery:hover {
-  background: @surface0;
-}
+/* ---------- Right (one accent per module) ---------- */
+#network       { border-color: @teal;     color: @teal; }
+#bluetooth     { border-color: @sapphire; color: @sapphire; }
+#pulseaudio    { border-color: @blue;     color: @blue; }
+#backlight     { border-color: @yellow;   color: @yellow; }
+#cpu           { border-color: @peach;    color: @peach; }
+#temperature   { border-color: @red;      color: @red; }
+#battery       { border-color: @green;    color: @green; }
+#custom-power  { border-color: @maroon;   color: @maroon; padding: 0 11px; }
 
 /* ---------- States ---------- */
+#network.disconnected,
 #pulseaudio.muted {
-  color: @overlay0;
-  border-color: @surface1;
+  color: @overlay1;
+  border-color: @overlay1;
 }
 
-#network.disconnected {
-  color: @red;
-  border-color: @red;
+#bluetooth.off,
+#bluetooth.disabled {
+  color: @overlay1;
 }
 
-#bluetooth.disabled,
-#bluetooth.off {
-  color: @overlay0;
-  border-color: @surface1;
+#bluetooth.connected {
+  color: @sapphire;
+  background: alpha(@sapphire, 0.15);
 }
 
-#temperature.critical {
-  color: @crust;
-  background: @red;
-  border-color: @red;
-}
+
+#cpu.warning      { color: @yellow; border-color: @yellow; }
+#cpu.critical     { color: @red;    border-color: @red; }
 
 #battery.charging,
 #battery.plugged {
-  color: @teal;
-  border-color: @teal;
+  color: @green;
+  background: alpha(@green, 0.15);
 }
 
 #battery.warning:not(.charging) {
@@ -237,27 +157,30 @@ window#waybar.empty #window {
 }
 
 #battery.critical:not(.charging) {
-  color: @crust;
-  background: @red;
+  color: @red;
   border-color: @red;
-  animation: blink 0.8s steps(2) infinite alternate;
+  animation: blink 1s ease-in-out infinite alternate;
 }
 
 @keyframes blink {
   to {
-    background: @mantle;
-    color: @red;
+    background: alpha(@red, 0.35);
   }
 }
 
-/* ---------- Power ---------- */
-#custom-power {
-  color: @red;
-  border-color: @red;
-  padding: 0 16px 0 14px;
+#custom-power:hover {
+  background: @maroon;
+  color: @base;
 }
 
-#custom-power:hover {
-  background: @red;
-  color: @crust;
+/* ---------- Tooltips ---------- */
+tooltip {
+  background: @mantle;
+  border: 1px solid @lavender;
+  border-radius: 10px;
+}
+
+tooltip label {
+  color: @text;
+  padding: 2px 6px;
 }

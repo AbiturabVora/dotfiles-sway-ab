@@ -1,7 +1,6 @@
 // ~/.config/waybar/config.jsonc
-// Catppuccin Mocha floating-island bar
-// Requires a Nerd Font (e.g. JetBrainsMono Nerd Font)
-// Using Sway? Replace "hyprland/workspaces" -> "sway/workspaces" and "hyprland/window" -> "sway/window"
+// Your original config, restored (tray, rofi, wlogout flags, btop clicks, etc.)
+// Only change: "hyprland/window" block renamed to "sway/window" so max-length applies.
 {
   "layer": "top",
   "position": "top",
@@ -25,10 +24,7 @@
     "tray",
     "pulseaudio",
     "backlight",
-    "network",
-    "bluetooth",
     "cpu",
-    "memory",
     "temperature",
     "battery",
     "custom/power"
@@ -63,7 +59,7 @@
     }
   },
 
-  "hyprland/window": {
+  "sway/window": {
     "format": "{title}",
     "max-length": 40,
     "separate-outputs": true,
@@ -146,13 +142,6 @@
     "on-click": "kitty -e btop"
   },
 
-  "memory": {
-    "interval": 5,
-    "format": "\uf538  {percentage}%",
-    "tooltip-format": "{used:0.1f}GiB / {total:0.1f}GiB used",
-    "on-click": "kitty -e btop"
-  },
-
   "temperature": {
     "critical-threshold": 80,
     "format": "{icon}  {temperatureC}\u00b0C",
@@ -175,7 +164,7 @@
   },
 
   "custom/power": {
-    "format": "\uf011",
+    "format": " \uf011 ",
     "tooltip": false,
     "on-click": "wlogout -b 4 -c 20 -r 20 -L 570 -R 570 -T 450 -B 450"
   }
