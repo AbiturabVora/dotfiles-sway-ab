@@ -35,16 +35,14 @@ window#waybar {
 /* ---------- Shared pill look ---------- */
 #custom-launcher,
 #workspaces,
+#window,
 #clock,
-#network,
-#bluetooth,
-#pulseaudio,
-#backlight,
-#cpu,
-#temperature,
+#tray,
+#controls,
+#sys,
 #battery,
 #custom-power {
-  background: alpha(@mantle, 0.65);
+  background: alpha(@mantle, 0.8);
   color: @text;
   border: 1px solid @overlay0;
   border-radius: 999px;
@@ -53,12 +51,9 @@ window#waybar {
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-#network:hover,
-#bluetooth:hover,
-#pulseaudio:hover,
-#backlight:hover,
-#cpu:hover,
-#temperature:hover,
+#tray:hover,
+#controls:hover,
+#sys:hover,
 #battery:hover,
 #clock:hover {
   background: alpha(@base, 0.95);
@@ -108,47 +103,62 @@ window#waybar {
   color: @base;
 }
 
+/* Window title pill */
+#window {
+  color: @overlay1;
+  border-color: alpha(@overlay0, 0.6);
+  padding: 0 12px;
+}
+
+/* Hide the pill when no window is focused */
+window#waybar.empty #window {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+}
+
 /* ---------- Center ---------- */
 #clock {
   border-color: @text;
   padding: 0 12px;
 }
 
-/* ---------- Right (one accent per module) ---------- */
-#network       { border-color: @teal;     color: @teal; }
-#bluetooth     { border-color: @sapphire; color: @sapphire; }
-#pulseaudio    { border-color: @blue;     color: @blue; }
-#backlight     { border-color: @yellow;   color: @yellow; }
-#cpu           { border-color: @peach;    color: @peach; }
-#temperature   { border-color: @red;      color: @red; }
-#battery       { border-color: @green;    color: @green; }
-#custom-power  { border-color: @maroon;   color: @maroon; padding: 0 11px; }
+/* ---------- Right ---------- */
+/* Each pill: border and text share one color. Battery and power stay neutral. */
+#tray          { border-color: @sapphire; padding: 0 10px; }
+#controls      { border-color: @blue; }
+#sys           { border-color: @mauve; }
+#battery       { border-color: @overlay0; color: @text; }
+#custom-power  { border-color: @overlay0; color: @text; padding: 0 12px; }
+
+/* Modules inside groups: plain text, no pill of their own */
+#pulseaudio,
+#backlight,
+#cpu,
+#temperature {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 6px;
+}
+
+#pulseaudio, #backlight   { color: @blue; }
+#cpu, #temperature        { color: @mauve; }
+
+#tray > .passive         { -gtk-icon-effect: dim; }
+#tray > .needs-attention { -gtk-icon-effect: highlight; }
 
 /* ---------- States ---------- */
-#network.disconnected,
-#pulseaudio.muted {
-  color: @overlay1;
-  border-color: @overlay1;
-}
-
-#bluetooth.off,
-#bluetooth.disabled {
-  color: @overlay1;
-}
-
-#bluetooth.connected {
-  color: @sapphire;
-  background: alpha(@sapphire, 0.15);
-}
-
-
-#cpu.warning      { color: @yellow; border-color: @yellow; }
-#cpu.critical     { color: @red;    border-color: @red; }
+#pulseaudio.muted     { color: @overlay1; }
+#cpu.warning          { color: @yellow; }
+#cpu.critical         { color: @red; }
+#temperature.critical { color: @red; }
 
 #battery.charging,
 #battery.plugged {
   color: @green;
-  background: alpha(@green, 0.15);
+  border-color: @green;
 }
 
 #battery.warning:not(.charging) {
@@ -169,7 +179,8 @@ window#waybar {
 }
 
 #custom-power:hover {
-  background: @maroon;
+  background: @red;
+  border-color: @red;
   color: @base;
 }
 

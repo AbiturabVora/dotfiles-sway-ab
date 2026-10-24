@@ -1,6 +1,4 @@
 // ~/.config/waybar/config.jsonc
-// Your original config, restored (tray, rofi, wlogout flags, btop clicks, etc.)
-// Only change: "hyprland/window" block renamed to "sway/window" so max-length applies.
 {
   "layer": "top",
   "position": "top",
@@ -22,17 +20,26 @@
 
   "modules-right": [
     "tray",
-    "pulseaudio",
-    "backlight",
-    "cpu",
-    "temperature",
+    "group/controls",
+    "group/sys",
     "battery",
     "custom/power"
   ],
 
+  // ---------- Groups (each group is one pill) ----------
+  "group/controls": {
+    "orientation": "horizontal",
+    "modules": ["pulseaudio", "backlight"]
+  },
+
+  "group/sys": {
+    "orientation": "horizontal",
+    "modules": ["cpu", "temperature"]
+  },
+
   // ---------- Left ----------
   "custom/launcher": {
-    "format": "󰍜",
+    "format": "",
     "tooltip": false,
     "on-click": "rofi -show drun"
   },
@@ -115,25 +122,6 @@
     "format": "{icon}  {percent}%",
     "format-icons": ["\uf185"],
     "scroll-step": 5
-  },
-
-  "network": {
-    "format-wifi": "\uf1eb  {signalStrength}%",
-    "format-ethernet": "\uf0e8  Wired",
-    "format-disconnected": "\uf071  Offline",
-    "tooltip-format-wifi": "{essid}\n{ipaddr}/{cidr}\n\u2191 {bandwidthUpBytes}  \u2193 {bandwidthDownBytes}",
-    "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}",
-    "on-click": "nm-connection-editor"
-  },
-
-  "bluetooth": {
-    "format": "\uf293",
-    "format-disabled": "\uf294",
-    "format-connected": "\uf293  {num_connections}",
-    "tooltip-format": "{controller_alias}\t{controller_address}",
-    "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "on-click": "blueman-manager"
   },
 
   "cpu": {

@@ -249,4 +249,5 @@ exec swayidle -w
 #Cursors
 seat seat0 xcursor_theme catppuccin-mocha-blue-cursors 24
 
-
+#Dolphin Themes
+exec_always systemctl --user import-environment QT_QPA_PLATFORMTHEME
