@@ -105,7 +105,7 @@
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
+    "format": "{icon}  {volume}",
     "format-muted": "\uf6a9  Muted",
     "format-bluetooth": "\uf293  {volume}%",
     "format-icons": {
@@ -119,14 +119,14 @@
   },
 
   "backlight": {
-    "format": "{icon}  {percent}%",
+    "format": "{icon}  {percent}",
     "format-icons": ["\uf185"],
     "scroll-step": 5
   },
 
   "cpu": {
     "interval": 2,
-    "format": "\uf2db  {usage}%",
+    "format": "\uf2db  {usage}",
     "on-click": "kitty -e btop"
   },
 
