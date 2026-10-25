@@ -236,18 +236,17 @@ bindsym $mod+r mode "resize"
 #
 include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf")'
 
-output * bg /home/abi/Pictures/wall.png fill
+output * bg ~/Pictures/wall.png fill
 
 # Screenshots
+bindsym Print exec ~/.config/sway/screenshot.sh full
 bindsym $mod+Print exec ~/.config/sway/screenshot.sh area
 bindsym $mod+Shift+s exec ~/.config/sway/screenshot.sh save
 bindsym $mod+Shift+a exec ~/.config/sway/screenshot.sh edit
 
-#SwayIdle
+# SwayIdle (reads ~/.config/swayidle/config)
+# If `pgrep -a swayidle` shows two processes, Fedora's defaults already start it: delete the next line.
 exec swayidle -w
 
 #Cursors
-seat seat0 xcursor_theme catppuccin-mocha-blue-cursors 24
-
-#Dolphin Themes
-exec_always systemctl --user import-environment QT_QPA_PLATFORMTHEME
+seat seat0 xcursor_theme catppuccin-mocha-mauve-cursors 24

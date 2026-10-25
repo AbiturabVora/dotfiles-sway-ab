@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Dotfiles installer — Fedora + Sway + Catppuccin Mocha
+# Dotfiles installer: Fedora + Sway + Catppuccin Mocha
 #
 # Usage:
-#   ./install.sh              install packages, fonts, themes, and link configs
-#   ./install.sh --links     only link configs (no packages, no downloads)
-#   ./install.sh --sddm      also install the SDDM login theme (needs sudo)
+#   ./install.sh            install packages, fonts, themes, and link configs
+#   ./install.sh --links    only link configs (no packages, no downloads)
+#   ./install.sh --sddm     also install the SDDM login theme (needs sudo)
 #
 # Existing configs are moved to ~/.dotfiles-backup/<timestamp>/ before linking.
 
@@ -13,7 +13,6 @@ set -uo pipefail
 DOTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG="$HOME/.config"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-OLD_USER="abi"            # username the configs were written with
 
 DO_PACKAGES=1
 DO_SDDM=0
@@ -34,9 +33,9 @@ install_packages() {
   say "Installing packages"
 
   PKGS=(
-    sway waybar foot wlogout fastfetch
+    sway waybar foot wlogout fastfetch dunst starship btop rsync
     grim slurp wl-clipboard swappy swaylock swayidle jq
-    thunar thunar-volman gvfs tumbler xfconf
+    nemo nemo-fileroller nemo-preview gvfs gvfs-mtp gvfs-smb
     papirus-icon-theme brightnessctl pavucontrol blueman
     network-manager-applet git curl unzip wev
     gtk-murrine-engine gnome-themes-extra sassc qt6-qtsvg
@@ -46,12 +45,13 @@ install_packages() {
     sudo dnf install -y "$p" || warn "could not install $p"
   done
 
-  # rofi: wayland build name differs between Fedora releases
+  # rofi: the Wayland build name differs between Fedora releases
   sudo dnf install -y rofi-wayland || sudo dnf install -y rofi || warn "could not install rofi"
 
-  # swayosd lives in COPR
-  sudo dnf copr enable -y erikreider/swayosd \
-    && sudo dnf install -y swayosd || warn "could not install swayosd"
+  # swayosd: try the official repos first, then COPR
+  sudo dnf install -y swayosd 2>/dev/null \
+    || { sudo dnf copr enable -y erikreider/swayosd && sudo dnf install -y swayosd; } \
+    || warn "could not install swayosd"
 }
 
 # ------------------------------------------------------------------- fonts
@@ -107,13 +107,25 @@ install_cursor() {
   rm -rf "$tmp"
 }
 
+setup_starship() {
+  say "Enabling starship prompt"
+  if ! grep -q 'starship init bash' "$HOME/.bashrc" 2>/dev/null; then
+    echo 'eval "$(starship init bash)"' >> "$HOME/.bashrc"
+    echo "added to ~/.bashrc"
+  else
+    echo "already in ~/.bashrc"
+  fi
+}
+
 apply_gsettings() {
   say "Applying GTK settings"
   S=org.gnome.desktop.interface
-  gsettings set $S gtk-theme 'Catppuccin-Dark'        2>/dev/null || warn "gsettings gtk-theme failed"
-  gsettings set $S icon-theme 'Papirus-Dark'          2>/dev/null || true
+  gsettings set $S gtk-theme 'Catppuccin-Dark'                   2>/dev/null || warn "gsettings gtk-theme failed"
+  gsettings set $S icon-theme 'Papirus-Dark'                     2>/dev/null || true
   gsettings set $S cursor-theme 'catppuccin-mocha-mauve-cursors' 2>/dev/null || true
-  gsettings set $S color-scheme 'prefer-dark'         2>/dev/null || true
+  gsettings set $S color-scheme 'prefer-dark'                    2>/dev/null || true
+  xdg-mime default nemo.desktop inode/directory                  2>/dev/null || true
+  gsettings set org.nemo.desktop show-desktop-icons false        2>/dev/null || true
 }
 
 # ------------------------------------------------------------------- links
@@ -139,43 +151,26 @@ link_configs() {
     echo "link    $name"
   done
 
-  # wallpapers
+  # wallpapers and the fastfetch logo
   if [ -d "$DOTS/wallpapers" ]; then
-    mkdir -p "$HOME/Pictures"
-    cp -n "$DOTS"/wallpapers/* "$HOME/Pictures/" 2>/dev/null || true
     mkdir -p "$HOME/Pictures/Screenshots"
+    cp -n "$DOTS"/wallpapers/* "$HOME/Pictures/" 2>/dev/null || true
   fi
 
   # scripts that must be executable
   chmod +x "$DOTS"/config/sway/*.sh 2>/dev/null || true
-  chmod +x "$DOTS"/config/rofi/*.sh 2>/dev/null || true
 
-  # configs were written for /home/$OLD_USER; rewrite for this machine
-  if [ "$USER" != "$OLD_USER" ]; then
-    say "Rewriting /home/$OLD_USER -> $HOME"
-    grep -rl "/home/$OLD_USER" "$DOTS/config" 2>/dev/null \
-      | xargs -r sed -i "s#/home/$OLD_USER#$HOME#g"
-  fi
+  # per-machine Sway file (gitignored)
+  local_conf="$DOTS/config/sway/config.d/99-local.conf"
+  [ -e "$local_conf" ] || cp "$local_conf.example" "$local_conf" 2>/dev/null || true
 }
 
 # -------------------------------------------------------------------- sddm
 install_sddm() {
-  say "Installing SDDM Catppuccin theme"
-  tmp="$(mktemp -d)"
-  curl -L -o "$tmp/sddm.zip" \
-    https://github.com/catppuccin/sddm/releases/latest/download/catppuccin-mocha-mauve-sddm.zip \
-    && sudo unzip -o "$tmp/sddm.zip" -d /usr/share/sddm/themes/ >/dev/null \
-    || { warn "SDDM theme download failed"; rm -rf "$tmp"; return; }
-  rm -rf "$tmp"
-
-  if [ -f "$DOTS/sddm/sddm.conf" ]; then
-    sudo cp "$DOTS/sddm/sddm.conf" /etc/sddm.conf
-  else
-    printf '[Theme]\nCurrent=catppuccin-mocha-mauve\n\n[Users]\nRememberLastUser=true\nRememberLastSession=true\n' \
-      | sudo tee /etc/sddm.conf >/dev/null
-  fi
-  echo "SDDM theme set. Test with:"
-  echo "  sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/catppuccin-mocha-mauve"
+  say "Installing SDDM theme (field)"
+  bash "$DOTS/sddm/install.sh" || warn "SDDM install failed"
+  echo "Test with:"
+  echo "  sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/field"
 }
 
 # -------------------------------------------------------------------- main
@@ -189,6 +184,7 @@ fi
 link_configs
 
 if [ "$DO_PACKAGES" -eq 1 ]; then
+  setup_starship
   apply_gsettings
 fi
 

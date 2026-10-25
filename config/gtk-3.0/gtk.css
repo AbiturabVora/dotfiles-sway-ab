@@ -1,28 +1,28 @@
-/* Thunar: Catppuccin touches */
-.thunar .view:selected,
-.thunar treeview.view:selected,
-.thunar iconview:selected {
+/* Nemo: Catppuccin touches */
+.nemo-window .view:selected,
+.nemo-window iconview:selected,
+.nemo-window treeview.view:selected {
   background-color: #cba6f7;
   color: #11111b;
   border-radius: 8px;
 }
 
-.thunar .view:hover {
+.nemo-window .view:hover {
   background-color: alpha(#cba6f7, 0.18);
   border-radius: 8px;
 }
 
-.thunar toolbar,
-.thunar .toolbar {
+.nemo-window toolbar,
+.nemo-window .toolbar {
   background-color: #181825;
   padding: 4px;
 }
 
-.thunar entry {
+.nemo-window entry {
   border-radius: 10px;
 }
 
-.thunar .sidebar,
-.thunar .shortcuts-pane {
+.nemo-window .sidebar,
+.nemo-window .nemo-places-sidebar {
   background-color: #181825;
 }

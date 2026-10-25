@@ -13,10 +13,6 @@
 
 </div>
 
-<!-- Add screenshots here:
-<p align="center"><img src="screenshots/desktop.png" width="90%"></p>
--->
-
 ---
 
 ## ✨ What's inside
@@ -31,10 +27,11 @@
 | 🖼️ | **fastfetch** | Custom image logo with Catppuccin colours |
 | 💜 | **starship** | Catppuccin powerline prompt |
 | 🔒 | **swayidle + swaylock** | Lock after 3 minutes, screen off 10 seconds later |
+| 🔔 | **dunst** | Rounded Catppuccin notifications below the bar |
 | 📸 | **grim + slurp + swappy** | Full screen, area, and annotated screenshots |
-| 📁 | **Thunar** | Themed with the GTK theme |
-| 🔐 | **SDDM** | Catppuccin Mocha Mauve login, remembers last user |
-| 🎨 | **Theming** | Catppuccin GTK, Papirus-Dark icons, Bibata cursor |
+| 📁 | **Nemo** | Themed with the GTK theme |
+| 🔐 | **SDDM** | Custom `field` login theme, remembers last user |
+| 🎨 | **Theming** | Catppuccin GTK, Papirus-Dark icons, Catppuccin Mocha Mauve cursor |
 
 ---
 
@@ -74,20 +71,12 @@ Then log out and back in, or reload Sway with `Mod` + `Shift` + `C`.
 
 > 🛟 **Safe by design:** existing configs are moved to `~/.dotfiles-backup/<time>/` before linking. Nothing is deleted.
 
-### 🧩 Not handled by the installer
+### 🧩 What the installer also does
 
-Two things are set up by hand:
-
-```bash
-# prompt
-sudo dnf install starship
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
-
-# cursor: download Bibata-Modern-Classic.tar.xz from
-# https://github.com/ful1e5/Bibata_Cursor/releases, then:
-mkdir -p ~/.local/share/icons
-tar -xf ~/Downloads/Bibata-Modern-Classic.tar.xz -C ~/.local/share/icons
-```
+- Installs the JetBrainsMono Nerd Font, the Catppuccin GTK theme and the mauve cursor
+- Adds the starship prompt to `~/.bashrc` (once)
+- Sets Nemo as the default file manager
+- Creates `config/sway/config.d/99-local.conf` for per-machine settings (gitignored)
 
 ---
 
@@ -98,17 +87,19 @@ dotfiles/
 ├── install.sh
 ├── sync.sh
 ├── config/
-│   ├── sway/          # sway config, screenshot.sh
+│   ├── sway/          # sway config, screenshot.sh, config.d/
 │   ├── waybar/        # config.jsonc, style.css
 │   ├── rofi/          # config.rasi, catppuccin-mocha.rasi
 │   ├── foot/          # foot.ini
 │   ├── wlogout/       # layout, style.css
 │   ├── fastfetch/     # config.jsonc
 │   ├── swayidle/      # config
-│   ├── gtk-3.0/       # settings.ini
+│   ├── swayosd/       # config.toml, style.css
+│   ├── dunst/         # dunstrc
+│   ├── gtk-3.0/       # settings.ini, gtk.css
 │   └── starship.toml
 ├── wallpapers/        # wall.png, fetch.png
-└── sddm/              # sddm.conf
+└── sddm/              # theme (field) and conf.d
 ```
 
 ---
@@ -142,7 +133,9 @@ git pull origin main
 | Keys | Action |
 |---|---|
 | `Mod` + `Return` | Open terminal |
-| `Mod` + `d` | App launcher |
+| `Mod` + `Space` | App launcher |
+| `Mod` + `Shift` + `Space` | Toggle floating |
+| `Mod` + `d` | Swap focus between tiled and floating windows |
 | `Mod` + `q` | Close window |
 | `Mod` + `Shift` + `c` | Reload Sway |
 | `Mod` + `1` … `9` | Switch workspace |
@@ -164,7 +157,7 @@ Volume and brightness keys use Fedora's default bindings. Everything else follow
 - **Wallpaper:** replace `wallpapers/wall.png`, or edit the `output * bg` line.
 - **Terminal transparency:** change `alpha=` in `config/foot/foot.ini`.
 - **Idle timers:** edit `config/swayidle/config`, then run `pkill swayidle && swaymsg exec 'swayidle -w'`.
-- **Cursor:** set in three places, `gsettings`, `config/gtk-3.0/settings.ini` and the `seat seat0 xcursor_theme` line in the Sway config.
+- **Cursor:** set in three places, `gsettings` (in `install.sh`), `config/gtk-3.0/settings.ini` and the `seat seat0 xcursor_theme` line in the Sway config. Keep the names identical.
 
 ---
 
@@ -172,15 +165,19 @@ Volume and brightness keys use Fedora's default bindings. Everything else follow
 
 - 📌 **Order matters.** Fedora's defaults load from the `include` line near the end of the Sway config. Anything that must override them (wallpaper, screenshot keys, swayidle) goes **below** that line.
 - 🔒 **Idle lock.** The screen locks after **3 minutes** and turns off 10 seconds later. Apps keep running, and you enter your password to return.
-- 🟢 **Nvidia.** The machine uses the proprietary driver, so check the Sway config with `sway -C --unsupported-gpu`.
+- 🟢 **Nvidia.** The proprietary driver is not officially supported by Sway. Check the config with `sway -C --unsupported-gpu`. On hybrid laptops, running Sway on the integrated GPU is usually much smoother. Find it with `ls -l /dev/dri/by-path/`, then create `~/.config/environment.d/sway.conf` (this file is per machine and is not in the repo):
+  ```
+  WLR_DRM_DEVICES=/dev/dri/card1
+  ```
+  Use the card that belongs to the AMD/Intel GPU, then log out and in. Run games with `prime-run <app>`.
 - 🔤 **Nerd Font required.** Waybar, rofi, foot and fastfetch use its icons.
 - 🖼️ **fastfetch image logo** needs a terminal with sixel support. foot has it.
-- 🏠 **Paths.** Configs were written for `/home/abi`, and the installer rewrites this to your home folder.
+- 🏠 **Paths.** Configs use `~` and `$HOME`, so they work under any username. Per-machine tweaks (monitors, touchpad) go in `config/sway/config.d/99-local.conf`.
 - 🖥️ **SDDM.** Test the theme before you reboot:
   ```bash
-  sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/catppuccin-mocha-mauve
+  sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/field
   ```
-  To go back to the default, set `Current=03-sway-fedora` in `/etc/sddm.conf`.
+  The theme is selected in `/etc/sddm.conf.d/theme.conf`. If it does not apply, check that `/etc/sddm.conf` has no `Current=` line, because it overrides the drop-in. To go back to the default, set `Current=03-sway-fedora`.
 
 ---
 
@@ -192,7 +189,7 @@ Volume and brightness keys use Fedora's default bindings. Everything else follow
 | Icons show as boxes | Install the Nerd Font, then run `fc-cache -f` |
 | Red bar after reload | Click **Toggle details**. Warnings about overwriting bindings are fine |
 | Screen never locks | Check `pgrep -a swayidle` and that `swaylock` is installed |
-| Cursor looks wrong | Check the cursor name in `settings.ini` and the Sway config |
+| Cursor looks wrong | Check the cursor name in `settings.ini`, `install.sh` and the Sway config |
 | App closes at once on Wayland | Try `GDK_BACKEND=x11 app` or `WEBKIT_DISABLE_DMABUF_RENDERER=1 app` |
 | Push is rejected | Run `git pull origin main --no-rebase`, then push again |
 | `Permission denied (publickey)` | You used `sudo`, or the SSH key isn't loaded. Test with `ssh -T git@github.com` |
@@ -203,7 +200,7 @@ Volume and brightness keys use Fedora's default bindings. Everything else follow
 
 - [Catppuccin](https://github.com/catppuccin) for the palette and themes
 - [Fausto-Korpsvart/Catppuccin-GTK-Theme](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme) for the GTK theme
-- [Bibata Cursor](https://github.com/ful1e5/Bibata_Cursor) for the cursor
+- [Catppuccin cursors](https://github.com/catppuccin/cursors) for the cursor
 - The Sway, Waybar, rofi, foot, wlogout, starship and fastfetch projects
 
 ---

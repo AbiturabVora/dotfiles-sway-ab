@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
+# Copy live configs into the repo (if they are not already symlinked), then commit and push.
+# Usage: ./sync.sh "what I changed"
 set -e
-cd ~/dotfiles
+cd "$(dirname "$(readlink -f "$0")")"
 
-for d in sway waybar rofi foot wlogout fastfetch swayidle gtk-3.0; do
+DIRS=(sway waybar rofi foot wlogout fastfetch swayidle swayosd dunst gtk-3.0)
+
+for d in "${DIRS[@]}"; do
   src="$HOME/.config/$d"
   dst="config/$d"
   [ -d "$src" ] || continue
   if [ "$(readlink -f "$src")" != "$(readlink -f "$dst")" ]; then
-    rsync -a --delete "$src/" "$dst/"
+    mkdir -p "$dst"
+    if command -v rsync >/dev/null; then
+      rsync -a --delete --exclude 'config.d/99-local.conf' "$src/" "$dst/"
+    else
+      cp -a "$src/." "$dst/"
+    fi
   fi
 done
 

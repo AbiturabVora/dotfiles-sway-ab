@@ -105,7 +105,7 @@
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume}",
+    "format": "{icon}  {volume}%",
     "format-muted": "\uf6a9  Muted",
     "format-bluetooth": "\uf293  {volume}%",
     "format-icons": {
@@ -127,7 +127,7 @@
   "cpu": {
     "interval": 2,
     "format": "\uf2db  {usage}",
-    "on-click": "kitty -e btop"
+    "on-click": "foot -e btop"
   },
 
   "temperature": {
